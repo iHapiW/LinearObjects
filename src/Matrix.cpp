@@ -50,7 +50,6 @@ Matrix::Matrix(const std::vector<std::vector<double>>& matrixRows) {
     }
 }
 
-
 Matrix::Matrix(const Matrix &matrix) {
     n = matrix.n;
     m = matrix.m;
@@ -77,15 +76,22 @@ Matrix& Matrix::operator=(Matrix &&matrix) noexcept {
     return *this;
 }
 
-
-
 // Methods
 
 std::string Matrix::toString() const {
-    std::ostringstream os{};
-    for(std::size_t i = 0; i < n; i++)
-        os << rows[i] << '\n';
+    std::ostringstream os;
+    os << *this;
     return os.str();
+}
+
+Matrix Matrix::transpose() const {
+    Matrix result(m, n);
+    for(std::size_t i = 0; i < n; i++) {
+        for(std::size_t j = 0; j < m; j++) {
+            result[j][i] = rows[i][j];
+        }
+    }
+    return result;
 }
 
 // Getters
@@ -199,7 +205,8 @@ void Matrix::setSubMatrix(std::size_t rowStart, std::size_t columnStart, const M
 // Friend Operators
 
 std::ostream &operator<<(std::ostream& os, const Matrix& matrix) {
-    os << matrix.toString();
+    for(std::size_t i = 0; i < matrix.n; i++)
+        os << matrix.rows[i] << '\n';
     return os;
 }
 

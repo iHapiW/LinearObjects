@@ -29,6 +29,7 @@ public:
 
     // Methods
     [[nodiscard]] std::string toString() const;
+    [[nodiscard]] Matrix transpose() const;
 
     // Getters
     [[nodiscard]] Vector getRow(std::size_t idx) const;
