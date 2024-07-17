@@ -94,6 +94,36 @@ Matrix Matrix::transpose() const {
     return result;
 }
 
+Matrix Matrix::swapRows(std::size_t idx1, std::size_t idx2) const {
+    Matrix result(*this);
+    return result.transpose();
+}
+
+Matrix Matrix::swapColumns(std::size_t idx1, std::size_t idx2) const {
+    Matrix result(*this);
+    return result.swapColumns(idx1, idx2);
+}
+
+Matrix& Matrix::transpose() {
+    *this = static_cast<const Matrix&>(*this).transpose();
+    return *this;
+}
+
+Matrix& Matrix::swapRows(std::size_t idx1, std::size_t idx2) {
+    if( idx1 >= n || idx2 >= n)
+        throw std::invalid_argument("Condition didn't match ( idx1 < rowCount && idx2 < rowCount )");
+    std::swap(rows[idx1], rows[idx2]);
+    return *this;
+}
+
+Matrix& Matrix::swapColumns(std::size_t idx1, std::size_t idx2) {
+    if(idx1 >= m || idx2 >= m)
+        throw std::invalid_argument("Condition didn't match ( idx1 < columnCount && idx2 < columnCount");
+    for(std::size_t i = 0; i < n; i++)
+        std::swap(rows[i][idx1], rows[i][idx2]);
+    return *this;
+}
+
 // Getters
 
 Matrix Matrix::getSubMatrix(std::size_t rowStart, std::size_t rowEnd,
@@ -153,16 +183,17 @@ Vector Matrix::getSubColumn(std::size_t idx, std::size_t rowStart, std::size_t r
 
 // Setters
 
-void Matrix::setRow(std::size_t idx, const Vector& row) {
+Matrix& Matrix::setRow(std::size_t idx, const Vector& row) {
     if(row.getDimension() != m)
         throw std::invalid_argument("Row should contain " + std::to_string(m) + " Columns");
     if(idx >= n)
         throw std::invalid_argument("Index out of bound");
 
     rows[idx] = row;
+    return *this;
 }
 
-void Matrix::setColumn(std::size_t idx, const Vector& column) {
+Matrix& Matrix::setColumn(std::size_t idx, const Vector& column) {
     if(column.getDimension() != m)
         throw std::invalid_argument("Column should contain " + std::to_string(n) + " Columns");
     if(idx >= m)
@@ -170,9 +201,11 @@ void Matrix::setColumn(std::size_t idx, const Vector& column) {
 
     for(std::size_t i = 0; i < n; i++)
         rows[i][idx] = column[i];
+
+    return *this;
 }
 
-void Matrix::setSubRow(std::size_t idx, std::size_t columnStart, const Vector &subRow) {
+Matrix& Matrix::setSubRow(std::size_t idx, std::size_t columnStart, const Vector &subRow) {
     if(subRow.getDimension() > m - columnStart)
         throw std::invalid_argument("Condition didn't match ( subRow.getDimension() <= columnCount - columnStart )");
     if(idx >= n)
@@ -180,9 +213,11 @@ void Matrix::setSubRow(std::size_t idx, std::size_t columnStart, const Vector &s
 
     for(std::size_t j = 0; j < subRow.getDimension(); j++)
         rows[idx][j+columnStart] = subRow[j];
+
+    return *this;
 }
 
-void Matrix::setSubColumn(std::size_t idx, std::size_t rowStart, const Vector &subColumn) {
+Matrix& Matrix::setSubColumn(std::size_t idx, std::size_t rowStart, const Vector &subColumn) {
     if(subColumn.getDimension() > n - rowStart)
         throw std::invalid_argument("Condition didn't match ( subColumn.getDimension() <= rowCount - rowStart )");
     if(idx >= m)
@@ -190,9 +225,11 @@ void Matrix::setSubColumn(std::size_t idx, std::size_t rowStart, const Vector &s
 
     for(std::size_t j = 0; j < subColumn.getDimension(); j++)
         rows[j+rowStart][idx] = subColumn[j];
+
+    return *this;
 }
 
-void Matrix::setSubMatrix(std::size_t rowStart, std::size_t columnStart, const Matrix &matrix) {
+Matrix& Matrix::setSubMatrix(std::size_t rowStart, std::size_t columnStart, const Matrix &matrix) {
     if(matrix.m > n - rowStart)
         throw std::invalid_argument("Condition didn't match ( matrix.columnCount <= rowCount - rowStart )");
     if(matrix.n > m - columnStart)
@@ -200,6 +237,8 @@ void Matrix::setSubMatrix(std::size_t rowStart, std::size_t columnStart, const M
 
     for(std::size_t i = 0; i < matrix.n; i++)
         setSubRow(i + rowStart, columnStart, matrix[i]);
+
+    return *this;
 }
 
 // Friend Operators
@@ -224,6 +263,30 @@ Matrix operator*(const Matrix &lhs, const Matrix &rhs) {
     return result;
 }
 
+Matrix operator*(const Matrix &lhs, double coeff) {
+    return coeff * lhs;
+}
+
+Matrix operator*(double coeff, const Matrix &lhs) {
+    Matrix result(lhs);
+    for(std::size_t i = 0; i < lhs.n; i++)
+        for(std::size_t j = 0; j < lhs.m; j++)
+            result[i][j] *= coeff;
+    return result;
+}
+
+Matrix operator+(const Matrix &lhs, const Matrix &rhs) {
+    if(lhs.n != rhs.n || lhs.m != rhs.m)
+        throw std::invalid_argument("Addition of matrices with different sizes are not defined!");
+
+    Matrix result(lhs);
+    for(std::size_t i = 0; i < lhs.n; i++)
+        for(std::size_t j = 0; j < lhs.m; j++)
+            result[i][j] += rhs[i][j];
+
+    return result;
+}
+
 // Class Operators
 
 Vector& Matrix::operator[](std::size_t idx) {
@@ -237,3 +300,5 @@ const Vector& Matrix::operator[](std::size_t idx) const {
         throw std::invalid_argument("Index out of bound");
     return rows[idx];
 }
+
+

@@ -30,6 +30,11 @@ public:
     // Methods
     [[nodiscard]] std::string toString() const;
     [[nodiscard]] Matrix transpose() const;
+    [[nodiscard]] Matrix swapRows(std::size_t idx1, std::size_t idx2) const;
+    [[nodiscard]] Matrix swapColumns(std::size_t idx1, std::size_t idx2) const;
+    Matrix& transpose();
+    Matrix& swapRows(std::size_t idx1, std::size_t idx2);
+    Matrix& swapColumns(std::size_t idx1, std::size_t idx2);
 
     // Getters
     [[nodiscard]] Vector getRow(std::size_t idx) const;
@@ -40,15 +45,18 @@ public:
                                       std::size_t columnStart, std::size_t columnEnd) const;
 
     // Setters
-    void setRow(std::size_t idx, const Vector& row);
-    void setColumn(std::size_t idx, const Vector& column);
-    void setSubRow(std::size_t idx, std::size_t columnStart, const Vector &subRow);
-    void setSubColumn(std::size_t idx, std::size_t rowStart, const Vector &subColumn);
-    void setSubMatrix(std::size_t rowStart, std::size_t columnStart, const Matrix& matrix);
+    Matrix& setRow(std::size_t idx, const Vector& row);
+    Matrix& setColumn(std::size_t idx, const Vector& column);
+    Matrix& setSubRow(std::size_t idx, std::size_t columnStart, const Vector &subRow);
+    Matrix& setSubColumn(std::size_t idx, std::size_t rowStart, const Vector &subColumn);
+    Matrix& setSubMatrix(std::size_t rowStart, std::size_t columnStart, const Matrix& matrix);
 
     // Friend Operators
     friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
     friend Matrix operator*(const Matrix& lhs, const Matrix& rhs);
+    friend Matrix operator*(const Matrix& lhs, double coeff);
+    friend Matrix operator*(double coeff, const Matrix& lhs);
+    friend Matrix operator+(const Matrix& lhs, const Matrix& rhs);
 
     // Class Operators
     Vector& operator[]( std::size_t idx );
