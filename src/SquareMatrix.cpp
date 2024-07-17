@@ -45,6 +45,48 @@ SquareMatrix &SquareMatrix::operator=(SquareMatrix &&matrix) noexcept {
     return *this;
 }
 
+// Methods
+
+SquareMatrix& SquareMatrix::transpose() {
+    for(std::size_t i = 0; i < n; i++)
+        for(std::size_t j = 0; j < m; j++)
+            std::swap(rows[i][j], rows[j][i]);
+
+    return *this;
+}
+
+SquareMatrix& SquareMatrix::swapRows(std::size_t idx1, std::size_t idx2) {
+    Matrix::swapRows(idx1, idx2);
+    return *this;
+}
+
+SquareMatrix& SquareMatrix::swapColumns(std::size_t idx1, std::size_t idx2) {
+    Matrix::swapColumns(idx1, idx2);
+    return *this;
+}
+
+// Setters
+
+SquareMatrix& SquareMatrix::setRow(std::size_t idx, const Vector &row) {
+    Matrix::setRow(idx, row);
+    return *this;
+}
+
+SquareMatrix &SquareMatrix::setColumn(std::size_t idx, const Vector &column) {
+    Matrix::setColumn(idx, column);
+    return *this;
+}
+
+SquareMatrix &SquareMatrix::setSubRow(std::size_t idx, std::size_t columnStart, const Vector &subRow) {
+    Matrix::setSubRow(idx, columnStart, subRow);
+    return *this;
+}
+
+SquareMatrix &SquareMatrix::setSubColumn(std::size_t idx, std::size_t rowStart, const Vector &subColumn) {
+    Matrix::setSubColumn(idx, rowStart, subColumn);
+    return *this;
+}
+
 // Friend Operators
 
 SquareMatrix operator*(const SquareMatrix &lhs, const SquareMatrix &rhs) {
@@ -65,5 +107,17 @@ SquareMatrix operator^(const SquareMatrix &matrix, std::size_t power) {
         return result;
     }
 
+}
+
+SquareMatrix operator*(const SquareMatrix &lhs, double coeff) {
+    return SquareMatrix(coeff * static_cast<const Matrix&>(lhs));
+}
+
+SquareMatrix operator*(double coeff, const SquareMatrix &lhs) {
+    return SquareMatrix(coeff * static_cast<const Matrix&>(lhs));
+}
+
+SquareMatrix operator+(const SquareMatrix &lhs, const SquareMatrix &rhs) {
+    return SquareMatrix(static_cast<const Matrix&>(lhs) + static_cast<const Matrix&>(rhs));
 }
 

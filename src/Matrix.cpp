@@ -84,28 +84,14 @@ std::string Matrix::toString() const {
     return os.str();
 }
 
-Matrix Matrix::transpose() const {
+Matrix& Matrix::transpose() {
     Matrix result(m, n);
     for(std::size_t i = 0; i < n; i++) {
         for(std::size_t j = 0; j < m; j++) {
             result[j][i] = rows[i][j];
         }
     }
-    return result;
-}
-
-Matrix Matrix::swapRows(std::size_t idx1, std::size_t idx2) const {
-    Matrix result(*this);
-    return result.transpose();
-}
-
-Matrix Matrix::swapColumns(std::size_t idx1, std::size_t idx2) const {
-    Matrix result(*this);
-    return result.swapColumns(idx1, idx2);
-}
-
-Matrix& Matrix::transpose() {
-    *this = static_cast<const Matrix&>(*this).transpose();
+    *this = result;
     return *this;
 }
 
