@@ -21,16 +21,18 @@ SquareMatrix::SquareMatrix(const std::vector<std::vector<double>> &matrixRows) :
         throw std::invalid_argument("This is not Square Matrix!");
 }
 
+SquareMatrix::SquareMatrix(const Matrix& matrix) : Matrix(matrix) {
+    if(n != m)
+        throw std::invalid_argument("This is not Square Matrix!");
+}
+
+// (Move & Copy) (Constructor & Assignment)
+
 SquareMatrix::SquareMatrix(const SquareMatrix &matrix) : Matrix(matrix.rows) {
 }
 
 SquareMatrix::SquareMatrix(const SquareMatrix &&matrix) noexcept : Matrix(matrix.rows){
 
-}
-
-SquareMatrix::SquareMatrix(const Matrix& matrix) : Matrix(matrix) {
-    if(n != m)
-        throw std::invalid_argument("This is not Square Matrix!");
 }
 
 SquareMatrix &SquareMatrix::operator=(const SquareMatrix &matrix) {
@@ -49,7 +51,7 @@ SquareMatrix &SquareMatrix::operator=(SquareMatrix &&matrix) noexcept {
 
 SquareMatrix& SquareMatrix::transpose() {
     for(std::size_t i = 0; i < n; i++)
-        for(std::size_t j = 0; j < m; j++)
+        for(std::size_t j = 0; j < i; j++)
             std::swap(rows[i][j], rows[j][i]);
 
     return *this;
