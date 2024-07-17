@@ -50,6 +50,35 @@ Matrix::Matrix(const std::vector<std::vector<double>>& matrixRows) {
     }
 }
 
+
+Matrix::Matrix(const Matrix &matrix) {
+    n = matrix.n;
+    m = matrix.m;
+    rows = matrix.rows;
+}
+
+Matrix::Matrix(const Matrix &&matrix) noexcept {
+    n = matrix.n;
+    m = matrix.m;
+    rows = matrix.rows;
+}
+
+Matrix& Matrix::operator=(const Matrix &matrix) {
+    n = matrix.n;
+    m = matrix.m;
+    rows = matrix.rows;
+    return *this;
+}
+
+Matrix& Matrix::operator=(Matrix &&matrix) noexcept {
+    n = matrix.n;
+    m = matrix.m;
+    rows = matrix.rows;
+    return *this;
+}
+
+
+
 // Methods
 
 std::string Matrix::toString() const {
@@ -174,6 +203,20 @@ std::ostream &operator<<(std::ostream& os, const Matrix& matrix) {
     return os;
 }
 
+Matrix operator*(const Matrix &lhs, const Matrix &rhs) {
+    if(lhs.m != rhs.n)
+        throw std::invalid_argument("Left matrix's column count should be equal to right matrix's row count!");
+
+    Matrix result(lhs.n, rhs.m);
+    for(std::size_t i = 0; i < lhs.n; i++) {
+        for(std::size_t j = 0; j < rhs.m; j++) {
+            result[i][j] = lhs.getRow(i) * rhs.getColumn(j);
+        }
+    }
+
+    return result;
+}
+
 // Class Operators
 
 Vector& Matrix::operator[](std::size_t idx) {
@@ -187,4 +230,3 @@ const Vector& Matrix::operator[](std::size_t idx) const {
         throw std::invalid_argument("Index out of bound");
     return rows[idx];
 }
-

@@ -21,6 +21,12 @@ public:
     explicit Matrix(const std::vector<Vector>& matrixRows);
     explicit Matrix(const std::vector<std::vector<double>>& matrixRows);
 
+    // (Move & Copy) (Constructor & Assignment)
+    Matrix(const Matrix& matrix);
+    Matrix(const Matrix&& matrix) noexcept;
+    Matrix& operator=(const Matrix& matrix);
+    Matrix& operator=(Matrix&& matrix) noexcept;
+
     // Methods
     [[nodiscard]] std::string toString() const;
 
@@ -41,10 +47,12 @@ public:
 
     // Friend Operators
     friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
+    friend Matrix operator*(const Matrix& lhs, const Matrix& rhs);
 
     // Class Operators
     Vector& operator[]( std::size_t idx );
     const Vector& operator[]( std::size_t idx) const;
+
 };
 
 #endif //MATRIX_HPP
