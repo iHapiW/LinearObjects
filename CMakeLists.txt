@@ -9,11 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 file(GLOB SRC 
     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hxx"
-    "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
 )
 
 add_library(${PROJECT_NAME} STATIC ${SRC})
