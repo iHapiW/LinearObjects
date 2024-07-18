@@ -10,7 +10,13 @@
 #include <initializer_list>
 #include <vector>
 
+class Matrix;
+
 // Note: All Objects Are Zero-Origin Based !
+enum class VectorType {
+    RowMatrix,
+    ColumnMatrix
+};
 
 class Vector {
 private:
@@ -35,6 +41,7 @@ public:
     [[nodiscard]] double magnitude() const;
     [[nodiscard]] std::size_t getDimension() const;
     [[nodiscard]] double angle(const Vector& rhs) const; // In Radians
+    [[nodiscard]] Matrix getMatrix(VectorType vType) const;
 
     // Operators
     friend std::ostream& operator<<(std::ostream& os, const Vector& vec);    // Printing vec.toString()

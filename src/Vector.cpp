@@ -1,4 +1,5 @@
 #include "Vector.hpp"
+#include "Matrix.hpp"
 
 // Constructors
 
@@ -63,6 +64,18 @@ double Vector::angle(const Vector &rhs) const{
     return acos(dotProduct/magnitudes);
 }
 
+Matrix Vector::getMatrix(VectorType vType) const {
+    std::vector<std::vector<double>> v{ comps };
+    Matrix m (v);
+    if(vType == VectorType::RowMatrix)
+        return m;
+    if(vType == VectorType::ColumnMatrix)
+        return m.transpose();
+    else
+        throw std::invalid_argument("vType is neither RowMatrix nor ColumnMatrix!");
+}
+
+
 // Operators
 
 std::ostream& operator<<(std::ostream& os, const Vector& vec) {
@@ -72,7 +85,7 @@ std::ostream& operator<<(std::ostream& os, const Vector& vec) {
         if(i != vec.n-1)
             os << ", ";
     }
-    os << " )";
+    os << " )\n";
     return os;
 }
 

@@ -205,7 +205,7 @@ const MatrixSize& Matrix::getDimension() const {
 
 Matrix& Matrix::setRow(std::size_t idx, const Vector& row) {
     if(row.getDimension() != size.columnCount)
-        throw std::invalid_argument("Row should contain " + std::to_string(size.columnCount) + " Columns");
+        throw std::invalid_argument("Vector should contain " + std::to_string(size.columnCount) + " Elements");
     if(idx >= size.rowCount)
         throw std::invalid_argument("Index out of bound");
 
@@ -214,8 +214,8 @@ Matrix& Matrix::setRow(std::size_t idx, const Vector& row) {
 }
 
 Matrix& Matrix::setColumn(std::size_t idx, const Vector& column) {
-    if(column.getDimension() != size.columnCount)
-        throw std::invalid_argument("Column should contain " + std::to_string(size.rowCount) + " Columns");
+    if(column.getDimension() != size.rowCount)
+        throw std::invalid_argument("Vector should contain " + std::to_string(size.rowCount) + " Elements");
     if(idx >= size.columnCount)
         throw std::invalid_argument("Index out of bound");
 
@@ -265,7 +265,7 @@ Matrix& Matrix::setSubMatrix(std::size_t rowStart, std::size_t columnStart, cons
 
 std::ostream &operator<<(std::ostream& os, const Matrix& matrix) {
     for(std::size_t i = 0; i < matrix.size.rowCount; i++)
-        os << matrix.data[i] << '\n';
+        os << matrix.data[i];
     return os;
 }
 
