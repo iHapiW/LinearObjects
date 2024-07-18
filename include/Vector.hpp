@@ -10,6 +10,8 @@
 #include <initializer_list>
 #include <vector>
 
+// Note: All Objects Are Zero-Origin Based !
+
 class Vector {
 private:
         std::vector<double> comps{};
@@ -42,9 +44,13 @@ public:
     friend Vector operator*(double coeff, const Vector& vec);   // Vector with Coefficient (vec * coeff)
     friend Vector operator+(const Vector& lhs, const Vector& rhs); // Vector Addition
 
+    // Class Operators
     Vector operator-() const;    // Vector negation ( -1 * (*this) )
     double& operator[](std::size_t n);
     const double& operator[](std::size_t n) const;
+
+    // Destructor
+    ~Vector() = default;
 };
 
 #endif // LINEAROBJECTS_HPP

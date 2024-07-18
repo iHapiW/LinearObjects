@@ -8,15 +8,27 @@
 
 #include "Vector.hpp"
 
+// Note: All Objects Are Zero-Origin Based !
+
+class MatrixSize {
+public:
+    std::size_t rowCount{};
+    std::size_t columnCount{};
+
+    MatrixSize() = default;
+    [[nodiscard]] bool validate() const;
+    ~MatrixSize() = default;
+};
+
 class Matrix {
 protected:
-    std::vector<Vector> rows{};
-    std::size_t n{};
-    std::size_t m{};
+    std::vector<Vector> data{};
+    MatrixSize size{};
 
 public:
     // Constructors
     Matrix(std::size_t rowCount, std::size_t columnCount);
+    explicit Matrix(MatrixSize matSize);
     Matrix(std::initializer_list<std::initializer_list<double>> matrixRows);
     explicit Matrix(const std::vector<Vector>& matrixRows);
     explicit Matrix(const std::vector<std::vector<double>>& matrixRows);
@@ -40,6 +52,7 @@ public:
     [[nodiscard]] Vector getSubColumn(std::size_t idx, std::size_t rowStart, std::size_t rowEnd) const;
     [[nodiscard]] Matrix getSubMatrix(std::size_t rowStart, std::size_t rowEnd,
                                       std::size_t columnStart, std::size_t columnEnd) const;
+    [[nodiscard]] const MatrixSize& getDimension() const;
 
     // Setters
     virtual Matrix& setRow(std::size_t idx, const Vector& row);

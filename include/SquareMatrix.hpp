@@ -6,6 +6,8 @@
 
 #include "Matrix.hpp"
 
+// Note: All Objects Are Zero-Origin Based !
+
 class SquareMatrix: public Matrix {
 public:
     // Constructors
