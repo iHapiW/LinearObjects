@@ -140,6 +140,13 @@ Matrix& Matrix::swapColumns(std::size_t idx1, std::size_t idx2) {
     return *this;
 }
 
+Matrix& Matrix::rotate()
+{
+    for(std::size_t i = 0; i < size.rowCount/2; i++)
+        swapRows(i, size.rowCount-i-1);
+    return transpose();
+}
+
 // Getters
 
 Matrix Matrix::getSubMatrix(std::size_t rowStart, std::size_t rowEnd,

@@ -44,6 +44,7 @@ public:
     virtual Matrix& transpose();
     virtual Matrix& swapRows(std::size_t idx1, std::size_t idx2);
     virtual Matrix& swapColumns(std::size_t idx1, std::size_t idx2);
+    Matrix& rotate();
 
     // Getters
     [[nodiscard]] Vector getRow(std::size_t idx) const;
